@@ -30,6 +30,10 @@ contract MatchingPennies is Ownable {
         games[opponent] = Game(opponent, payable(msg.sender), 0, 0, 0, 0, false, false);
     }
 
+    function getGame() public view returns (address, address, bool, bool) {
+        return (games[msg.sender].player1, games[msg.sender].player2, games[msg.sender].hasChosen, games[msg.sender].played);
+    }
+
     function setChoiceHashed(bytes32 _choiceHashed) public payable{
         require(msg.value == betAmount, "You must bet the price of the game");
         require(games[msg.sender].hasChosen == false, "You already chose a choice");
