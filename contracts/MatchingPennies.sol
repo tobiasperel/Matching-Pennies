@@ -63,6 +63,7 @@ contract MatchingPennies is Ownable {
             emit winner(opponent, msg.sender);
            games[msg.sender].player2.transfer(amountToSend); // else player2 wins
         }
+        games[msg.sender].played = true;
         games[opponent].played = true;
         
     }
