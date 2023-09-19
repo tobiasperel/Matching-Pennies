@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 async function main() {
-  const contractAddress = "0x0De68314EE482247FBC86b6279EeE82E14555808"; // Sustituye por la dirección de tu contrato en la cadena
+  const contractAddress = "0x15D981b77de032A7dC4952d0cE96B903f686c963"; // Sustituye por la dirección de tu contrato en la cadena
   const [deployer] = await ethers.getSigners();
   const jugador2 = "0xcb0fF44D7818640F558Ec699d1cfCB8e3ff41489"
   // Conecta al contrato utilizando la dirección y la ABI
@@ -9,15 +9,22 @@ async function main() {
   // Llama a una función de lectura del contrato (ejemplo)
   console.log("llamando desde la cuenta:", deployer.address)
   
+  // const hash = await contract.encodePacked(1, 515);
+  // console.log('hash:', hash.toString());
+  const contractBalance = await contract.getBalance();
+  console.log('balance del contrato:', contractBalance.toString());
+
   // const result2 = await contract.CreateGame(jugador2);
   // console.log('Partida creada:', result2.toString());
-  
-  // const result3 = await contract.setChoiceHashed("0x6a756761646f7232000000000000000000000000000000000000000000000001");
-  // console.log('jugador1 ha jugado:', result3.toString());
+  const result3 = await contract.setChoiceHashed("0xf1885eda54b7a053318cd41e2093220dab15d65381b1157a3633a83bfd5c9239").
+  console.log('jugador1 ha jugado:', result3.toString());
 
-  const result4 = await contract.revealChoice(1,"jugador1")
-  console.log('jugador1 ha revelado su jugada:', result4.toString());
+  // const result4 = await contract.revealChoice(1,515)
+  // console.log('jugador1 ha revelado su jugada:', result4.toString());
   
+  // const result5 = await contract.play(jugador2);
+  // console.log('jugador2 ha jugado:', result5.toString());
+
   const result = await contract.getGame(); // Reemplaza 'someFunction' con el nombre de la función que deseas llamar
   console.log('data de los juegos', result.toString());
 }

@@ -1,12 +1,6 @@
 def create_bytes32(nonce, number):
-    # Convierte el nonce en una representación de bytes UTF-8
-    nonce_bytes = nonce.encode('utf-8')
-
-    # Asegura que la longitud del nonce sea 32 bytes
-    if len(nonce_bytes) > 16:
-        nonce_bytes = nonce_bytes[:16]
-    elif len(nonce_bytes) < 16:
-        nonce_bytes = nonce_bytes.ljust(16, b'\0')
+    # Convierte el nonce en una representación de bytes de 32 bytes (big-endian)
+    nonce_bytes = nonce.to_bytes(16, byteorder='big')
 
     # Convierte el número en una representación de bytes de 32 bytes (big-endian)
     number_bytes = number.to_bytes(16, byteorder='big')
@@ -17,7 +11,7 @@ def create_bytes32(nonce, number):
     return result_bytes
 
 # Ejemplo de uso
-nonce = "jugador2"
+nonce = 12345  # Cambia este valor a tu número deseado
 number = 1
 bytes32_value = create_bytes32(nonce, number)
 print(f"Nonce: {nonce}")

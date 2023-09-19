@@ -36,22 +36,32 @@ contract MatchingPennies is Ownable {
 
     function setChoiceHashed(bytes32 _choiceHashed) public payable{
         require(msg.value == betAmount, "You must bet the price of the game");
+        payable(msg.sender).transfer(msg.value);
+        betAmount += msg.value;
         require(games[msg.sender].hasChosen == false, "You already chose a choice");
         require(games[msg.sender].played == false, "You already played this game");
         games[msg.sender].player1ChoiceHashed = _choiceHashed;
         games[msg.sender].hasChosen = true;
     }
 
-    function revealChoice(uint8 _choice, uint8 _nonce) public {
+    function revealChoice(uint8 _choice, uint16 _nonce) public {
         require(_choice == 1 || _choice == 2, "You must choose 1 or 2");
         require(games[msg.sender].hasChosen == true, "You must choose a choice first");
         require(games[msg.sender].played == false, "You already played this game");
-        require(games[msg.sender].player2Choice == 0 , "You already revealed your choice");
+        require(games[msg.sender].player1Choice == 0 , "You already revealed your choice");
         require(games[msg.sender].player1ChoiceHashed == keccak256(abi.encodePacked(_choice, _nonce)), "Your choice doesn't match the hashed choice");
         games[msg.sender].player1Choice = _choice;
+        games[games[msg.sender].player2].player2Choice = _choice;
     }
 
-    function play(address  opponent) public  {
+    function encodePacked(uint8 _choice, uint16 _nonce) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(_choice, _nonce));
+    }
+    function getBalance() public view returns (uint) {
+        return address(this).balance;
+    }
+
+    function play(address opponent) public  {
         require(games[msg.sender].played == false, "You already played this game");
         require(games[msg.sender].player2 == opponent, "You are not playing against this opponent");
         require(games[msg.sender].player1Choice != 0 && games[msg.sender].player2Choice != 0, "both must set a choice");
