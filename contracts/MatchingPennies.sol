@@ -7,7 +7,7 @@ contract MatchingPennies is Ownable {
     uint256 amountToSend = betAmount * 2;
 
     constructor(uint _betAmount)  {
-        betAmount = _betAmount;
+        betAmount = _betAmount /1000;
     }
 
     struct Game {

@@ -1,24 +1,20 @@
-import { ethers } from "hardhat";
-import { utils } from 'ethers'
+import { ethers, upgrades } from 'hardhat';
+import { Contract } from 'ethers';
 
 async function main() {
-  const MatchingPenniesFactory = await ethers.getContractFactory('MatchingPennies')  
-  const MatchingPennies = await MatchingPenniesFactory.deploy(1)
-  await console.log("Contract deployed to address:", MatchingPennies.address);
-  // await MatchingPennies.deployed()
-  console.log("Contract address:", MatchingPennies.address);
-    console.log("Transaction hash:", MatchingPennies.deployTransaction.hash);
+  const [deployer] = await ethers.getSigners();
+  console.log(`Deploying contracts with the account: ${deployer.address}`);
+  const contract = await ethers.getContractFactory('MatchingPennies');
+  const deployedContract = await contract.deploy(1);
+  console.log(`Contract deployed to: ${deployedContract .address}`);
 
-    // Esperar a que se mine la transacción de despliegue
-    await MatchingPennies.deployTransaction.wait();
-    
-    console.log("Contract deployed successfully!");
   
+
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
