@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 async function main() {
-  const contractAddress = "0x92a3A0C1236b5e70Ef88963152ee01c2E5bc1071"; // Sustituye por la dirección de tu contrato en la cadena
+  const contractAddress = "0x45c742B382c7f33aE602a066E61E5924ed145504 "; // Sustituye por la dirección de tu contrato en la cadena
   const [deployer] = await ethers.getSigners();
   const jugador2 = "0xcb0fF44D7818640F558Ec699d1cfCB8e3ff41489"
   // Conecta al contrato utilizando la dirección y la ABI
@@ -11,8 +11,8 @@ async function main() {
   
   // const hash = await contract.encodePacked(1, 515);
   // console.log('hash:', hash.toString());
-  const contractBalance = await contract.getBalance();
-  console.log('balance del contrato:', contractBalance.toString());
+  // const contractBalance = await contract.getBalance();
+  // console.log('balance del contrato:', contractBalance.toString());
 
   // const result2 = await contract.CreateGame(jugador2);
   // console.log('Partida creada:', result2.toString());
@@ -26,8 +26,8 @@ async function main() {
   // const result5 = await contract.play(jugador2);
   // console.log('jugador2 ha jugado:', result5.toString());
 
-  const result = await contract.getGame(jugador2); 
-  console.log('data de los juegos', result.toString());
+  // const result = await contract.getGame(jugador2); 
+  // console.log('data de los juegos', result.toString());
 }
 
 // We recommend this pattern to be able to use async/await everywhere

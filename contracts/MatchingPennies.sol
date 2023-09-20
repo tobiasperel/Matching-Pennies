@@ -1,14 +1,8 @@
 pragma solidity ^0.8.9;
-import "@openzeppelin/contracts/access/Ownable.sol"; 
 
-contract MatchingPennies is Ownable {
 
-    uint public betAmount;
-    uint256 amountToSend = betAmount * 2;
+contract MatchingPennies  {
 
-    constructor(uint _betAmount)  {
-        betAmount = _betAmount /1000;
-    }
 
     struct Game {
         address payable player1;
@@ -36,9 +30,7 @@ contract MatchingPennies is Ownable {
     }
 
     function setChoiceHashed(bytes32 _choiceHashed) public payable{
-        require(msg.value == betAmount, "You must bet the price of the game");
-        payable(msg.sender).transfer(msg.value);
-        betAmount += msg.value;
+        require(msg.value == 0.1 ether, "You must bet the price of the game");
         require(games[msg.sender].hasChosen == false, "You already chose a choice");
         require(games[msg.sender].played == false, "You already played this game");
         games[msg.sender].player1ChoiceHashed = _choiceHashed;
@@ -73,26 +65,22 @@ contract MatchingPennies is Ownable {
         games[opponent].played = true;
         if (games[msg.sender].player1Choice == games[msg.sender].player2Choice && games[msg.sender].createGame == true ) { // if both players choose the same, player1 wins
             emit winner(msg.sender, opponent);
-            games[msg.sender].player1.transfer(amountToSend);
+            games[msg.sender].player1.transfer(0.2 ether);
         }
         else if (games[msg.sender].player1Choice == games[msg.sender].player2Choice && games[msg.sender].createGame == false ) { // if both players choose the same, player1 wins
             emit winner(opponent,msg.sender);
-            games[msg.sender].player2.transfer(amountToSend);
+            games[msg.sender].player2.transfer(0.2 ether);
         } 
         else if (games[msg.sender].player1Choice != games[msg.sender].player2Choice && games[msg.sender].createGame == true ) {
             emit winner(opponent, msg.sender);
-           games[msg.sender].player2.transfer(amountToSend); 
+           games[msg.sender].player2.transfer(0.2 ether); 
         }
         else if (games[msg.sender].player1Choice != games[msg.sender].player2Choice && games[msg.sender].createGame == false ) {
             emit winner(msg.sender, opponent);
-           games[msg.sender].player1.transfer(amountToSend); 
+           games[msg.sender].player1.transfer(0.2 ether); 
         }
         
         
-    }
-
-    function changeBetAmount(uint _betAmount) public onlyOwner {
-        betAmount = _betAmount;
     }
 
 }
