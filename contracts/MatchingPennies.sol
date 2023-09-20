@@ -19,6 +19,7 @@ contract MatchingPennies is Ownable {
         uint8 player2Choice;
         bool hasChosen;
         bool played;
+        bool createGame;
     }
     mapping (address => Game) private games;
 
@@ -26,12 +27,12 @@ contract MatchingPennies is Ownable {
 
     function CreateGame(address payable opponent) public  {
         require(msg.sender != opponent, "You can't play against yourself");
-        games[msg.sender] = Game(payable(msg.sender), opponent, 0, 0, 0, 0, false, false);
-        games[opponent] = Game(opponent, payable(msg.sender), 0, 0, 0, 0, false, false);
+        games[msg.sender] = Game(payable(msg.sender), opponent, 0, 0, 0, 0, false, false,true);
+        games[opponent] = Game(opponent, payable(msg.sender), 0, 0, 0, 0, false, false,false);
     }
 
-    function getGame() public view returns (address, address, bool, bool) {
-        return (games[msg.sender].player1, games[msg.sender].player2, games[msg.sender].hasChosen, games[msg.sender].played);
+    function getGame(address person) public view returns (address, address, bytes32,bytes32, bool, bool) {
+        return (games[person].player1, games[person].player2 , games[person].player1ChoiceHashed,games[person].player2ChoiceHased, games[person].hasChosen, games[person].played);
     }
 
     function setChoiceHashed(bytes32 _choiceHashed) public payable{
@@ -66,7 +67,7 @@ contract MatchingPennies is Ownable {
         require(games[msg.sender].player2 == opponent, "You are not playing against this opponent");
         require(games[msg.sender].player1Choice != 0 && games[msg.sender].player2Choice != 0, "both must set a choice");
         require( (games[msg.sender].player1Choice == 1 || games[msg.sender].player1Choice == 2)  &&  (games[msg.sender].player2Choice == 1 || games[msg.sender].player2Choice == 2));
-        if (games[msg.sender].player1Choice == games[msg.sender].player2Choice) { // if both players choose the same, player1 wins
+        if (games[msg.sender].player1Choice == games[msg.sender].player2Choice && games[msg.sender].createGame == true ) { // if both players choose the same, player1 wins
             emit winner(msg.sender, opponent);
             games[msg.sender].player1.transfer(amountToSend);
         } else {
