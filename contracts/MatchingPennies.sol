@@ -68,15 +68,26 @@ contract MatchingPennies is Ownable {
         require(games[msg.sender].player2 == opponent, "You are not playing against this opponent");
         require(games[msg.sender].player1Choice != 0 && games[msg.sender].player2Choice != 0, "both must set a choice");
         require( (games[msg.sender].player1Choice == 1 || games[msg.sender].player1Choice == 2)  &&  (games[msg.sender].player2Choice == 1 || games[msg.sender].player2Choice == 2));
+        
+        games[msg.sender].played = true;
+        games[opponent].played = true;
         if (games[msg.sender].player1Choice == games[msg.sender].player2Choice && games[msg.sender].createGame == true ) { // if both players choose the same, player1 wins
             emit winner(msg.sender, opponent);
             games[msg.sender].player1.transfer(amountToSend);
-        } else {
-            emit winner(opponent, msg.sender);
-           games[msg.sender].player2.transfer(amountToSend); // else player2 wins
         }
-        games[msg.sender].played = true;
-        games[opponent].played = true;
+        else if (games[msg.sender].player1Choice == games[msg.sender].player2Choice && games[msg.sender].createGame == false ) { // if both players choose the same, player1 wins
+            emit winner(opponent,msg.sender);
+            games[msg.sender].player2.transfer(amountToSend);
+        } 
+        else if (games[msg.sender].player1Choice != games[msg.sender].player2Choice && games[msg.sender].createGame == true ) {
+            emit winner(opponent, msg.sender);
+           games[msg.sender].player2.transfer(amountToSend); 
+        }
+        else if (games[msg.sender].player1Choice != games[msg.sender].player2Choice && games[msg.sender].createGame == false ) {
+            emit winner(msg.sender, opponent);
+           games[msg.sender].player1.transfer(amountToSend); 
+        }
+        
         
     }
 
