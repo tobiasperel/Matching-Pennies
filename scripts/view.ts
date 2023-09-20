@@ -16,8 +16,8 @@ async function main() {
 
   // const result2 = await contract.CreateGame(jugador2);
   // console.log('Partida creada:', result2.toString());
-  const result3 = await contract.setChoiceHashed("0xf1885eda54b7a053318cd41e2093220dab15d65381b1157a3633a83bfd5c9239").
-  console.log('jugador1 ha jugado:', result3.toString());
+  // const result3 = await contract.setChoiceHashed("0xf1885eda54b7a053318cd41e2093220dab15d65381b1157a3633a83bfd5c9239").
+  // console.log('jugador1 ha jugado:', result3.toString());
 
   // const result4 = await contract.revealChoice(1,515)
   // console.log('jugador1 ha revelado su jugada:', result4.toString());
