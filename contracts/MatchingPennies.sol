@@ -31,8 +31,8 @@ contract MatchingPennies is Ownable {
         games[opponent] = Game(opponent, payable(msg.sender), 0, 0, 0, 0, false, false,false);
     }
 
-    function getGame(address person) public view returns (address, address, bytes32,bytes32, bool, bool) {
-        return (games[person].player1, games[person].player2 , games[person].player1ChoiceHashed,games[person].player2ChoiceHased, games[person].hasChosen, games[person].played);
+    function getGame(address person) public view returns (address, address, bytes32,bytes32, bool, bool,bool) {
+        return (games[person].player1, games[person].player2 , games[person].player1ChoiceHashed,games[person].player2ChoiceHased, games[person].hasChosen, games[person].played,games[person].createGame);
     }
 
     function setChoiceHashed(bytes32 _choiceHashed) public payable{
@@ -42,6 +42,7 @@ contract MatchingPennies is Ownable {
         require(games[msg.sender].hasChosen == false, "You already chose a choice");
         require(games[msg.sender].played == false, "You already played this game");
         games[msg.sender].player1ChoiceHashed = _choiceHashed;
+        games[games[msg.sender].player2].player2ChoiceHased = _choiceHashed;
         games[msg.sender].hasChosen = true;
     }
 
